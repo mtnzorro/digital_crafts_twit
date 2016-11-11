@@ -1,0 +1,110 @@
+<!--
+Instructor Toby used to work at a super market as a cashier. His work experience there has made him an expert in making change.
+
+Write an app to make the change needed - in quarters, dimes, nickels, and pennies - given the bill amount, and the given amount.
+
+The app should have
+
+1. A number input to enter the bill amount.
+2. A number input to enter the given amount.
+3. A "Make change!" button
+4. When the "Make change!" button is clicked, it should display the number of coins for each coin type that are needed. For example:
+
+  * 4 quarters
+  * 3 dimes
+  * 0 nickels
+  * 2 pennies
+
+5. Bonus, display the coin image next to the number
+5. Extra super bonus: write this same app using jQuery or nothing but the DOM native API. Compare and contrast.
+
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Making Change</title>
+    <script src="angular.js"></script>
+    <script>
+    <!-- write JS in here -->
+
+    var app = angular.module('my-app', []);
+    app.controller('makeChange', function($scope){
+      $scope.bill = '';
+      $scope.given = '';
+      $scope.quarters = 0;
+      $scope.dimes = 0;
+      $scope.nickels = 0;
+      $scope.pennies = 0;
+      $scope.made_change = false;
+      $scope.quarter_up = false;
+      $scope.dimes_up = false;
+      $scope.nickels_up = false;
+      $scope.pennies_up = false;
+
+      $scope.addBill = function(){
+        $scope.bill = $scope.bill
+        console.log("Bill: "+ $scope.bill)
+      }
+      $scope.makeChange = function(){
+
+        var difference = Math.round(100 *($scope.given - $scope.bill))
+
+        console.log("Difference: "+difference)
+        $scope.quarters = Math.floor(difference/25)
+        console.log("Quarters: " + $scope.quarters)
+        difference = (difference%25)
+        console.log("Difference: "+difference)
+        if($scope.quarters > 0){$scope.quarter_up = true}
+        $scope.dimes = Math.floor(difference/10)
+        console.log("Dimes: " + $scope.dimes)
+        difference = difference%10
+        console.log("Difference: "+difference)
+        if($scope.dimes > 0){$scope.dimes_up = true}
+        $scope.nickels = Math.floor(difference/5)
+        console.log("Nickels: " + $scope.nickels)
+        difference = difference%5
+        console.log("Difference: "+difference)
+        if($scope.nickels > 0){$scope.nickels_up = true}
+        $scope.pennies = difference/1
+        console.log("Pennies: " + $scope.pennies)
+        if($scope.pennies > 0){$scope.pennies_up = true}
+        $scope.made_change = true
+
+      }
+      $scope.reset = function(){
+        $scope.bill = ''
+        $scope.given = ''
+        $scope.made_change = false
+        $scope.quarter_up = false;
+        $scope.dimes_up = false;
+        $scope.nickels_up = false;
+        $scope.pennies_up = false;
+      }
+    })
+
+
+
+    </script>
+  </head>
+  <body ng-app="my-app" ng-controller="makeChange">
+    <div>
+    <form ng-submit="addBill()">
+      <input type="text" placeholder="$Enter bill" ng-model = "bill">
+    </form>
+    <form ng-submit="makeChange()">
+      <input type="text" placeholder="$Enter Cash Given" ng-model = "given"><br>
+      <button type="submit">Make Change!</button>
+    </form>
+    <div ng-show="made_change">
+    <label>Change:</label><br>
+    <label ng-show="quarter_up"><img  src="quarter-front.png">Quarters: {{quarters}}</label><br>
+    <label ng-show="dimes_up"><img  src="dime-front.png">Dimes: {{dimes}}</label><br>
+    <label ng-show="nickels_up"><img  src="nickle-front.png">Nickels: {{nickels}}</label><br>
+    <label ng-show="pennies_up" ><img src="penny-front.png">Pennies: {{pennies}}</label><br>
+    <button ng-click = "reset()">Reset Calculator</button>
+  </div>
+    </div>
+    <!-- write template code in here -->
+  </body>
+</html>

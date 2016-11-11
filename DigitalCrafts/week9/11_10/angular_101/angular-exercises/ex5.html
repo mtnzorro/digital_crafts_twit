@@ -1,0 +1,81 @@
+<!--
+Make a todo list app part 1.
+
+1. make a list with predefined tasks and display them
+2. make a form with a text input and allow adding new tasks
+
+Hints at the bottom of this file.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Todo List</title>
+    <script src="angular.js"></script>
+    <style>
+    .done { text-decoration: line-through; }
+    </style>
+    <script>
+
+        var app = angular.module('my-app', []);
+        app.controller('TODO', function($scope){
+          $scope.tasks = [];
+          $scope.task = ''
+          $scope.addTask = function(){
+            $scope.tasks.push($scope.task)
+            $scope.task = ''
+          }
+        })
+
+    </script>
+  </head>
+  <body>
+    <div ng-app="my-app" ng-controller="TODO">
+      <form ng-submit="addTask()">
+        <input type="text" ng-model = "task"><button type="submit">Add</button>
+      </form>
+      <ul>
+        <!-- this is just place holder data -->
+        <li>Task one</li>
+        <li>Task two</li>
+        <li>Task three</li>
+        <li ng-repeat="item in tasks">
+          {{item}}
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!--
+Hints / Detailed steps
+
+0. Use angular-examples/9-simple-repeat.html and angular-examples/8-coins.html as examples for how to use ng-repeat. Don't copy and paste though.
+
+## List the items on the page
+
+1. Make an AngularJS module
+2. In that module, make a controller
+3. Attach template code to the module using `ng-app`
+4. Attach template code to the controller using `ng-controller`
+5. Create a tasks property on $scope and set it to an array of objects representing tasks, each one containing a "description" property.
+6. Make a ul
+7. Within the ul, make an li, add an `ng-repeat` attribute to the li to repeat it for each task in the tasks array - `ng-repeat="task in tasks"`. Display the description of each task using the `{{task.description}}` expression. See angular-examples/8-coins.html for an example of ng-repeat usage.
+
+## Add new items to the list
+
+8. Make a form, above the ul.
+9. Inside the form, make a text input and bind it to the `newTask` property of the scope: `<input type="text" ng-model="newTask">`
+10. Inside the form, make a button: `<button>Add</button>`
+11. Add an `ng-submit` directive to the form to call a method `addTask()`
+12. Create an addTask method in the $scope in JavaScript - which creates an object representing a task and pushes it onto the `$scope.tasks` array.
+-->
