@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Why do I have to do this</title>
+    <script src="angular.js"></script>
+    <script src="angular-ui-router.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script>
+
+
+      var app = angular.module('familyMembers', ['ui.router']);
+      app.directive('hello', function() {
+        return{
+          scope:{
+            'subject': '@'
+          },
+          template: '<h1>Hello {{subject}}!<h1>'
+        };
+      });
+
+      // app.directive('hello', function() {
+      //   return{
+      //     scope: {
+      //       'subject' : '@'
+      //     },
+      //     controller: function($scope){
+      //       $scope.person;
+      //       if ($scope.subject){
+      //         $scope.person = $scope.subject
+      //       }
+      //       else{
+      //         $scope.person = 'World'
+      //       }
+      //     },
+      //     template: '<h1>Hello {{person}} <h1>'
+      //   };
+      // });
+
+
+            app.directive('bt-button', function() {
+              return{
+                scope: {
+                  'subject' : '@'
+                },
+                controller: function($scope){
+                  $scope.person;
+                  if ($scope.subject){
+                    $scope.person = $scope.subject
+                  }
+                  else{
+                    $scope.person = 'World'
+                  }
+                },
+                template: '<h1>Hello {{person}} <h1>'
+              };
+            });
+
+      app.directive('btButton', function() {
+        return{
+          transclude: true,
+          scope: {
+            'subject' : '@'
+          },
+          controller: function($scope){
+            $scope.classes = [];
+            if ($scope.subject){
+              $scope.classes.push('btn-success')
+            }
+            else{
+              $scope.classes.push('btn-default')
+            }
+          },
+          template: '<button class="btn" ng-class="classes" ng-transclude></button>'
+        };
+      });
+
+      app.directive('former', function() {
+        return{
+          // transclude: true,
+          scope: {
+            'firstnn' : '@',
+            'lastnn' : '@',
+            'email' : '@',
+            'password' : '@'
+          },
+
+          template: "<form><div class='form-group'><label>{{firstnn}}</label><input type='text' class='form-control' placeholder='{{firstnn}}'></div><div class='form-group'><label>{{lastnn}}</label><input type='text' class='form-control' placeholder='{{lastnn}}'></div><div class='form-group'><label>{{email}}</label><input type='text' class='form-control' placeholder='{{email}}'></div><div class='form-group'><label>password</label><input type='password' class='form-control' placeholder='password'></div><button type='submit' class='btn btn-default'>Submit</button></form>"
+        };
+      });
+
+      app.directive('toggleButton', function() {
+        return{
+          // transclude: true,
+          scope: {
+            'ontext' : '@',
+            "offtext" : '@',
+            on: "="
+          },
+          controller: function($scope){
+
+            $scope.on = true;
+            $scope.class = "success"
+            $scope.text = "It's pooping time"
+            $scope.clickchange = function(){
+
+            if($scope.on){
+            $scope.text = $scope.offtext
+            $scope.on = !$scope.on
+            $scope.class = "danger"
+
+            }
+            else{
+              $scope.text = $scope.ontext;
+              $scope.on= !$scope.on;
+              $scope.class = "success"
+            }
+          }
+          },
+          template: '<button class="btn btn-{{class}}"ng-click="clickchange()">{{text}}</button>'
+        };
+      });
+    </script>
+  </head>
+  <body ng-app="familyMembers">
+    <hello subject = "Kirky Boo"></hello>
+    <bt-button>TIME TO POOP</bt-button>
+    <bt-button subject="success">POOPED</bt-button>
+    <former firstnn="First name" lastnn="Last Name" email="Email address"></former>
+    <toggle-button on = "butt" ontext="Fuck you truck" offtext="Show Truck"></toggle-button>
+    <img ng-show = "butt" src="https://s-media-cache-ak0.pinimg.com/originals/a3/19/28/a3192836f0d8500717f7327d36676a42.jpg" />
+      <ui-view></ui-view>
+  </body>
+</html>

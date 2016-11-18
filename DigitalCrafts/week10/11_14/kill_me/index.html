@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Why</title>
+    <script src="angular.js"></script>
+    <script src="angular-ui-router.js"></script>
+    <script>
+      var app = angular.module('wikiBoss', ['ui.router']);
+
+      function WikiPage(title, content) {
+        this.title = title;
+        this.content = content;
+      }
+
+      var pages = {
+        Python: new WikiPage('Python', 'Python is a fun to use programming language. It is great for beginners.'),
+        HTML: new WikiPage('HTML', 'HTML is the markup language used for making pages on the world wide web.')
+      };
+
+      // $scope.wiki_obj = new WikiPage($stateParams.wiki_name, $scope.content);
+
+      app.controller('wikiPages', function($scope, $stateParams) {
+        $scope.pageName = $stateParams.page_name
+        $scope.page = pages[$stateParams.page_name];
+        // $state.go('wiki', { name: $scope.wiki_obj.title });
+      });
+
+      // app.controller('wikiEdit', function($scope, $stateParams) {
+      //   $scope.editName = $stateParams.page_name;
+      //   $scope.editContent;
+      //   $stateParams.page_name = newWikiPage(editName,editContent);
+      //   // $state.go('wiki', { name: $scope.wiki_obj.title });
+      // });
+
+      app.controller('wikiEdit', function($scope, $stateParams, $state) {
+        $scope.editName = $stateParams.page_name
+        $scope.page = pages[$stateParams.page_name];
+        if(!$scope.page){
+          var page = new WikiPage($scope.editName, '');
+          pages[$scope.editName] = page;
+          $scope.page = page;
+        }
+        $scope.edit = function(){
+          $state.go('page_view', {page_name: $scope.page.title})
+        }
+
+        // $stateParams.page_name = newWikiPage(editName,editContent);
+        // $state.go('wiki', { name: $scope.wiki_obj.title });
+      });
+
+
+      app.config(function($stateProvider) {
+        $stateProvider
+          .state({
+            name: 'page_view',
+            url: '/{page_name}',
+            templateUrl: 'wiki.html',
+            controller: 'wikiPages'
+          });
+
+          $stateProvider
+            .state({
+              name: 'edit_view',
+              url: '/{page_name}/edit',
+              templateUrl: 'edit.html',
+              controller: 'wikiEdit'
+            });
+
+        // $urlRouterProvider.otherwise('/{wiki}');
+      });
+
+    </script>
+  </head>
+  <body ng-app="wikiBoss">
+      <ui-view></ui-view>
+  </body>
+</html>
