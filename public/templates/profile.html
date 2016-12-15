@@ -1,17 +1,20 @@
+<div class="nav_wrap">
+  <h5>Twit</h5>
+  <button ng-click = "timeline_go()" class="btn btn-danger" >Timeline</button>
+</div>
 <h1>Profile</h1>
 
 <div class="">
   <p>
     {{profile_data._id}}
   </p>
-  <p>
-    {{profile_data.avatar_url}}
-  </p>
+  <img class="profile_pic" src="/images/{{profile_data.avatar_url}}">
 </div>
 
-<div class="">
+<div>
   <ul>
   <li ng-repeat = "tweet in profile_tweets">
+      <img class="tweet_pic" src="/images/{{tweet.avatar_url}}">
     <p>
       {{tweet.text}}
     </p>
@@ -19,7 +22,7 @@
       {{tweet.userID}}
     </p>
     <p>
-      {{tweet.date}}
+      {{tweet.date | date:"MM/dd/yyyy @ h:mma"}}
     </p>
   </li>
     </ul>

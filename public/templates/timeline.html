@@ -1,1 +1,29 @@
-<h1>Profile Timeline Hoo!!</h1>
+<div class="nav_wrap">
+  <h5>Twit</h5>
+  <div class="nav_wrap">
+    <h5>Twit</h5>
+    <button ng-click = "timeline_go()" class="btn btn-danger" >Timeline</button>
+  </div>
+  <button ng-click = "profile_go()" class="btn btn-success" >Timeline</button>
+</div>
+</div>
+<form ng-submit = "tweeting()">
+  <input  ng-model="makeTweet" type="text" placeholder="What's happening?">
+</form>
+<div class="tweetWrapper" ng-repeat = "tweet in results">
+  <div class="tweet">
+    <img class="tweet_pic" src="/images/{{tweet.avatar_url}}">
+  <p>
+    {{tweet.user_id}}
+  </p>
+  <h4>
+    {{tweet.text}}
+  </h4>
+  <p>
+    {{tweet.date | date:"MM/dd/yyyy @ h:mma"}}
+  </p>
+  <!-- <p>
+    {{tweet._id}}
+  </p> -->
+  </div>
+</div>

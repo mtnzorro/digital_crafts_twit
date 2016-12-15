@@ -1,14 +1,40 @@
-<h1>Current Tweets</h1>
-<ul>
-  <li ng-repeat = "tweet in results">
-    <p>
-      {{tweet.text}}
-    </p>
+<div class="nav_wrap">
+  <h5>Twit</h5>
+  <form id="loginForm" ng-submit="submitLogin()">
+    <input type="text" placeholder="username">
+    <input type="text" placeholder="password">
+    <button type="submit">Login</button>
+  </form>
+</div>
+<h3>The Latest</h3>
+<div ng-show="signupShow" class="form-group">
+  <form id="signupForm" ng-submit="submitSignup()">
+    <input class="form-control" type="text" ng-model="user_id" placeholder="Username">
+    <input class="form-control" type="password" ng-model="password1" placeholder="Password">
+    <input class="form-control" type="password" ng-model="password2" placeholder="Confirm Password">
+    <input class="form-control" type="text" ng-model="first_name" placeholder="First name">
+    <input class="form-control" type="text" ng-model="last_name" placeholder="Last name">
+    <input class="form-control" type="text" ng-model="avatar_url" placeholder="Avatar image path">
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>
+
+  <button ng-hide = "signupShow" class="btn btn-primary" type="button" ng-click="signupShowShow()">Signup</button>
+
+  <div class="tweetWrapper" ng-repeat = "tweet in results">
+    <div class="tweet">
+      <img class="tweet_pic" src="/images/{{tweet.avatar_url}}">
     <p>
       {{tweet.user_id}}
     </p>
+    <h4>
+      {{tweet.text}}
+    </h4>
     <p>
-      {{tweet.date}}
+      {{tweet.date | date:"MM/dd/yyyy @ h:mma"}}
     </p>
-  </li>
-</ul>
+    <!-- <p>
+      {{tweet._id}}
+    </p> -->
+    </div>
+  </div>
