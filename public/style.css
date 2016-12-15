@@ -1,0 +1,7 @@
+.nav_wrap{
+  display: flex;
+  justify-content: space-between;
+}
+#loginForm {
+  float: right;
+}

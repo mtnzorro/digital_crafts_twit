@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Twit</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="/bower_components/angular/angular.js"></script>
+
+    <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="frontend.js"></script>
+  </head>
+  <body ng-app="Twitter">
+    <div class="nav_wrap">
+      <h3>Twit</h3>
+      <form id="loginForm">
+        <input type="text" placeholder="username">
+        <input type="text" placeholder="password">
+      </form>
+    </div>
+
+    <ui-view></ui-view>
+  </body>
+</html>
