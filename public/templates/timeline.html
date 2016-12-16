@@ -1,27 +1,45 @@
 <div class="nav_wrap">
-  <h5>Twit</h5>
-  <div class="nav_wrap">
-    <h5>Twit</h5>
-    <button ng-click = "timeline_go()" class="btn btn-danger" >Timeline</button>
+  <span class = "nav_img_wrap">
+    <img src="images/chocobo.png" width="50em" height="50em">
+    <h5 class = "twit_title">Twit</h5>
+  </span>
+  <div class="nav_buttons" ng-show="loggedIn">
+    <button ng-click = "profile_go()" class="btn btn-success" >Profile</button>
+    <button ng-click = "world_go()" class="btn btn-primary">World Timeline</button>
+      <button class= "btn btn-default" ng-click="logOut()" type="submit">Logout</button>
   </div>
-  <button ng-click = "profile_go()" class="btn btn-success" >Timeline</button>
+
 </div>
+<div class="tweet_bar">
+  <img class="tiny_tweet_pic" src="/images/{{profile_data.avatar_url}}">
+  <form ng-submit = "tweeting()">
+    <input class="form-control" ng-model="makeTweet" type="text" placeholder="What's happening?">
+  </form>
 </div>
-<form ng-submit = "tweeting()">
-  <input  ng-model="makeTweet" type="text" placeholder="What's happening?">
-</form>
 <div class="tweetWrapper" ng-repeat = "tweet in results">
   <div class="tweet">
     <img class="tweet_pic" src="/images/{{tweet.avatar_url}}">
-  <p>
-    {{tweet.user_id}}
-  </p>
-  <h4>
-    {{tweet.text}}
-  </h4>
-  <p>
-    {{tweet.date | date:"MM/dd/yyyy @ h:mma"}}
-  </p>
+    <div class="tweet_content_wrapper">
+      <div class="tweet_header_wrapper">
+        <p>
+          {{profile_data.first_name}} {{profile_data.last_name}}
+        </p>
+        <a ui-sref = "profile({name: tweet.user_id})">
+          @{{tweet.user_id}}
+        </a>
+        <p>
+          {{tweet.date | date:"MM/dd/yyyy @ h:mma"}}
+        </p>
+      </div>
+      <span >
+        <p class="tweet_text">
+          {{tweet.text}}
+        </p>
+      </span>
+
+    </div>
+
+
   <!-- <p>
     {{tweet._id}}
   </p> -->

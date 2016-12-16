@@ -1,29 +1,57 @@
 <div class="nav_wrap">
-  <h5>Twit</h5>
-  <button ng-click = "timeline_go()" class="btn btn-danger" >Timeline</button>
-</div>
-<h1>Profile</h1>
+  <span class = "nav_img_wrap">
+    <a ui-sref="world"><img src="images/chocobo.png" width="50em" height="50em"></a>
+    <h5 class = "twit_title">Twit</h5>
+  </span>
+  <div class="nav_buttons" ng-show="loggedIn">
+    <button ng-click = "timeline_go()" class="btn btn-danger" >Timeline</button>
+    <button ng-click = "world_go()" class="btn btn-primary">World Timeline</button>
+      <button class= "btn btn-default" ng-click="logOut()" type="submit">Logout</button>
+  </div>
+  <button ng-hide="loggedIn" ng-click = "world_go()" class="btn btn-primary">World Timeline</button>
 
-<div class="">
-  <p>
-    {{profile_data._id}}
-  </p>
+</div>
+
+<div class="profile_header">
+
   <img class="profile_pic" src="/images/{{profile_data.avatar_url}}">
+  <span class="profile_text">
+  <p>
+    {{profile_data.first_name}} {{profile_data.last_name}}
+  </p>
+  <p>
+    @{{profile_data._id}}
+  </p>
+  <button class="btn btn-warning" ng-click="follow(profile_data._id)">Follow</button>
+  </span>
 </div>
 
-<div>
-  <ul>
-  <li ng-repeat = "tweet in profile_tweets">
-      <img class="tweet_pic" src="/images/{{tweet.avatar_url}}">
-    <p>
-      {{tweet.text}}
-    </p>
-    <p>
-      {{tweet.userID}}
-    </p>
-    <p>
-      {{tweet.date | date:"MM/dd/yyyy @ h:mma"}}
-    </p>
-  </li>
-    </ul>
+<div class="tweetWrapper" ng-repeat = "tweet in profile_tweets">
+  <div class="tweet">
+    <img class="tweet_pic" src="/images/{{tweet.avatar_url}}">
+    <div class="tweet_content_wrapper">
+      <div class="tweet_header_wrapper">
+        <p>
+          {{profile_data.first_name}} {{profile_data.last_name}}
+        </p>
+        <p>
+          @{{tweet.user_id}}
+        </p>
+        <p>
+          {{tweet.date | date:"MM/dd/yyyy @ h:mma"}}
+        </p>
+      </div>
+      <span >
+        <p class="tweet_text">
+          {{tweet.text}}
+        </p>
+      </span>
+
+    </div>
+
+
+  <!-- <p>
+    {{tweet._id}}
+  </p> -->
+  </div>
 </div>

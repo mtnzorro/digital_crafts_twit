@@ -100,6 +100,8 @@ app.get('/userLogin', function(req, res) {
       })
         .catch(function(err){
           console.log('wtf', err.stack);
+          res.status(400);
+          res.send({error: err.message});
         });
 
       });
@@ -164,6 +166,23 @@ app.get('/profile-info', function (req, res) {
   });
 });
 
+app.post('/follow', function(req, res) {
+  var user_id = req.body.user_id;
+  var followee_id= req.body.followee_id;
+  User.update(
+    {_id : user_id},
+    {
+      $addToSet:{
+        following: followee_id
+      }
+
+  })
+
+.then(function(){
+    res.send(followee_id);
+  });
+});
+
 
 
 // My timeline
@@ -185,6 +204,9 @@ app.get('/timeline-info', function(req, res) {
 
       console.log(tweets);
       res.send(tweet_results);
+    })
+    .catch(function(err) {
+      res.send({error: err.message});
     });
 });
 

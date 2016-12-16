@@ -1,6 +1,21 @@
 var app = angular.module('Twitter', ['ui.router', 'ngCookies']);
 
-app.factory("Twitter_api", function factoryFunction($http) {
+
+app.factory("Twitter_api", function factoryFunction($http, $cookies, $rootScope, $state) {
+  if ($cookies.get('token')){
+    $rootScope.loggedIn = true;
+    $rootScope.user_id = $cookies.get('user_id')
+  }
+  else{
+  $rootScope.loggedIn = false;
+}
+  $rootScope.logOut = function() {
+    $cookies.remove('token');
+    $cookies.remove('user_id');
+    $rootScope.loggedIn = false;
+    $rootScope.user_id = ''
+    $state.go('world')
+  }
   var service = {};
   service.worldTweets = function() {
     return $http({
@@ -48,10 +63,22 @@ app.factory("Twitter_api", function factoryFunction($http) {
       }
     });
   };
+
+  service.userFollow = function(user_id, followee_id) {
+    return $http({
+      url: '/follow',
+      method: "POST",
+      data: {
+        user_id: user_id,
+        followee_id: followee_id
+      }
+    });
+  };
+
   service.userLogin = function(user_id, password) {
     return $http({
       url: '/userLogin',
-      data: {
+      params: {
         user_id: user_id,
         password: password
       }
@@ -63,13 +90,16 @@ app.factory("Twitter_api", function factoryFunction($http) {
   return service;
 });
 
-app.controller('WorldController', function($scope, $stateParams, $state, Twitter_api) {
+app.controller('WorldController', function($scope, $stateParams, $state, Twitter_api, $cookies, $rootScope) {
 $scope.signupShow = false;
 $scope.signupShowShow = function() {
   $scope.signupShow = true;
 };
+$scope.closeSignup = function() {
+  $scope.signupShow = false;
+};
 $scope.timeline_go = function(){
-  $state.go('timeline', {name: $scope.name});
+  $state.go('timeline', {name: $rootScope.user_id});
 };
   Twitter_api.worldTweets()
   .then(function(resp) {
@@ -93,23 +123,42 @@ $scope.timeline_go = function(){
     }
   };
   $scope.submitLogin = function() {
+    console.log($scope.user_id);
     Twitter_api.userLogin($scope.user_id, $scope.password)
-    .then(function() {
+    .then(function(resp) {
+      console.log("In the 'then'");
       $cookies.put('token', resp.data[1]);
-      $cookies.put('user_id', resp.data[0].user_id);
-      $scope.user_name = resp.data[0].user_id;
-
+      $cookies.put('user_id', $scope.user_id);
+      // $scope.user_name = resp.data[0].user_id;
+    })
+    .then(function(user_name) {
+      $rootScope.loggedIn = true;
+      $rootScope.user_id = $cookies.get('user_id')
+      $state.go('timeline', {name: $scope.user_id});
+    })
+    .catch(function(err) {
+      console.log('Didn\'t work: ', err.message);
     });
-    console.log($scope.user_name);
-    console.log("Login?");
-    $state.go('timeline', {name: $scope.user_name});
+    console.log("Nope");
+  };
+
+  $scope.profile_go = function(){
+    $state.go('profile', {name: $rootScope.user_id});
+  };
+  $scope.timeline_go = function(){
+    $state.go('timeline', {name: $rootScope.user_id});
   };
 });
 
-app.controller('ProfileController', function($scope, $stateParams, $state, Twitter_api) {
+
+app.controller('ProfileController', function($scope, $stateParams, $state, Twitter_api, $rootScope) {
   $scope.name = $stateParams.name;
   $scope.timeline_go = function(){
-    $state.go('timeline', {name: $scope.name});
+    $state.go('timeline', {name: $rootScope.user_id});
+    console.log($rootScope.user_id);
+  };
+  $scope.world_go = function() {
+    $state.go('world');
   };
   // $scope.user_id = 'theAsshole';
   Twitter_api.loadProfile($scope.name)
@@ -123,12 +172,22 @@ app.controller('ProfileController', function($scope, $stateParams, $state, Twitt
   .catch(function(err) {
     console.log(err.message);
   });
+  $scope.follow = function(followerId){
+    console.log(followerId);
+    Twitter_api.userFollow($rootScope.user_id, followerId)
+    .then(function(res){
+      console.log("You are following", res);
+    });
+  };
 });
 
-app.controller('TimelineController', function($scope, $stateParams, $state, Twitter_api) {
+app.controller('TimelineController', function($scope, $stateParams, $state, Twitter_api, $rootScope) {
   $scope.name = $stateParams.name;
   $scope.profile_go = function(){
-    $state.go('profile', {name: $scope.name});
+    $state.go('profile', {name: $rootScope.user_id});
+  };
+  $scope.world_go = function() {
+    $state.go('world');
   };
   $scope.tweeting = function(){
     Twitter_api.tweet($scope.makeTweet, $scope.profile_data._id, $scope.profile_data.name, $scope.profile_data.avatar_url)
@@ -147,6 +206,9 @@ app.controller('TimelineController', function($scope, $stateParams, $state, Twit
   .catch(function(err) {
     console.log(err.message);
   });
+  $scope.goToProfile = function(user_id){
+    $state.go = ('profile', {name: user_id});
+  };
 };
 
   // $scope.user_id = 'theAsshole';
@@ -161,7 +223,7 @@ app.controller('TimelineController', function($scope, $stateParams, $state, Twit
   });
 });
 
-app.controller('LoginController', function($scope, $state, Twitter_api) {
+app.controller('LoginController', function($scope, $state, Twitter_api, $rootScope) {
   Twitter_api.userLogin($scope.user_id, $scope.password).then(function() {
     $cookies.put('token', resp.data[1]);
     $cookies.put('user_id', resp.data[0].user_id);
