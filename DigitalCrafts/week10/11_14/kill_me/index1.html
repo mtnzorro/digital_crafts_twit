@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Why do I have to do this</title>
+    <script src="angular.js"></script>
+    <script src="angular-ui-router.js"></script>
+    <script>
+
+    function WikiPage(title, content) {
+      this.title = title;
+      this.content = content;
+    }
+      var app = angular.module('familyMembers', ['ui.router']);
+
+      // app.controller('myFamily', function($scope, $stateParams, $state) {
+      //   $scope.name = $stateParams.name;
+      //   };
+      // });
+      app.config(function($stateProvider, $urlRouterProvider) {
+        $stateProvider
+          .state({
+            name: 'family',
+            url: '/',
+            templateUrl: 'family.html',
+
+          })
+
+          .state({
+            name: 'jason',
+            url: '/jason',
+            templateUrl: 'jason.html',
+
+          })
+
+          .state({
+            name: 'jessica',
+            url: '/jessica',
+            templateUrl: 'jessica.html',
+
+          })
+
+          .state({
+            name: 'luca',
+            url: '/luca',
+            templateUrl: 'luca.html',
+
+          })
+
+          .state({
+            name: 'murphy',
+            url: '/murphy',
+            templateUrl: 'murphy.html',
+
+          });
+
+        $urlRouterProvider.otherwise('/');
+      });
+
+    </script>
+  </head>
+  <body ng-app="familyMembers">
+    <nav>
+      <a ui-sref="family" ui-sref-active="active">Family</a>
+      <a ui-sref="jason" ui-sref-active="active">Jason</a>
+      <a ui-sref="jessica" ui-sref-active="active">Jessica</a>
+      <a ui-sref="luca" ui-sref-active="active">Luca</a>
+      <a ui-sref="murphy" ui-sref-active="active">Murphy</a>
+    </nav>
+      <ui-view></ui-view>
+  </body>
+</html>

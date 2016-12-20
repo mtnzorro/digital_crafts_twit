@@ -1,0 +1,66 @@
+<!--
+Bonus: Make a Todo List part 2
+
+Add these features to your todo list:
+
+1. check off a task
+2. remove a task
+
+Hints at the bottom of this file.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Todo List</title>
+    <script src="angular.js"></script>
+    <style>
+    .done { text-decoration: line-through; }
+    </style>
+    <script>
+
+        var app = angular.module('my-app', []);
+        app.controller('TODO', function($scope){
+          $scope.tasks = [];
+          $scope.task = ''
+
+          $scope.addTask = function(){
+            $scope.tasks.push({'name' : $scope.task, 'done' : false})
+            $scope.task = ''
+          }
+
+          $scope.checkTask = function(x){
+              item_index = $scope.tasks.indexOf(x)
+              $scope.tasks[item_index].done = true;
+              // console.log($scope.tasks[item_index])
+          }
+
+          $scope.removeTask = function(){
+
+          $scope.tasks = $scope.tasks.filter(function(el){
+              var spot = $scope.tasks.indexOf(el)
+              if (el.done === false){
+                return el
+              }
+            })
+          }
+        })
+
+    </script>
+  </head>
+  <body>
+    <div ng-app="my-app" ng-controller="TODO">
+      <form ng-submit="addTask()">
+        <input type="text" ng-model = "task"><button type="submit">Add</button>
+      </form>
+      <ul>
+        <!-- this is just place holder data -->
+
+        <li ng-repeat="item in tasks" ng-class = "{done : item.done}">
+          {{item.name}}<input type="checkbox" ng-click = "checkTask(item)">
+        </li>
+      </ul>
+      <button ng-click="removeTask()">Remove</button>
+    </div>
+  </body>
+</html>
