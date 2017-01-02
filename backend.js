@@ -37,7 +37,7 @@ app.post('/signup', function(req, res) {
   var password = req.body.password;
   var first_name = req.body.first_name;
   var last_name = req.body.last_name;
-  var avatar_url = '/images/twit_ninja.png';
+  var avatar_url = 'twit_ninja.png';
   bcrypt.hash(password, saltRounds)
     .then(function(hash) {
       return hash;
