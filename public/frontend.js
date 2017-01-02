@@ -4,18 +4,18 @@ var app = angular.module('Twitter', ['ui.router', 'ngCookies']);
 app.factory("Twitter_api", function factoryFunction($http, $cookies, $rootScope, $state) {
   if ($cookies.get('token')){
     $rootScope.loggedIn = true;
-    $rootScope.user_id = $cookies.get('user_id')
+    $rootScope.user_id = $cookies.get('user_id');
   }
   else{
-  $rootScope.loggedIn = false;
-}
+    $rootScope.loggedIn = false;
+  }
   $rootScope.logOut = function() {
     $cookies.remove('token');
     $cookies.remove('user_id');
     $rootScope.loggedIn = false;
-    $rootScope.user_id = ''
-    $state.go('world')
-  }
+    $rootScope.user_id = '';
+    $state.go('world');
+  };
   var service = {};
   service.worldTweets = function() {
     return $http({
@@ -91,16 +91,16 @@ app.factory("Twitter_api", function factoryFunction($http, $cookies, $rootScope,
 });
 
 app.controller('WorldController', function($scope, $stateParams, $state, Twitter_api, $cookies, $rootScope) {
-$scope.signupShow = false;
-$scope.signupShowShow = function() {
-  $scope.signupShow = true;
-};
-$scope.closeSignup = function() {
   $scope.signupShow = false;
-};
-$scope.timeline_go = function(){
-  $state.go('timeline', {name: $rootScope.user_id});
-};
+  $scope.signupShowShow = function() {
+    $scope.signupShow = true;
+  };
+  $scope.closeSignup = function() {
+    $scope.signupShow = false;
+  };
+  $scope.timeline_go = function(){
+    $state.go('timeline', {name: $rootScope.user_id});
+  };
   Twitter_api.worldTweets()
   .then(function(resp) {
     $scope.results = resp.data;
@@ -133,7 +133,7 @@ $scope.timeline_go = function(){
     })
     .then(function(user_name) {
       $rootScope.loggedIn = true;
-      $rootScope.user_id = $cookies.get('user_id')
+      $rootScope.user_id = $cookies.get('user_id');
       $state.go('timeline', {name: $scope.user_id});
     })
     .catch(function(err) {
@@ -211,7 +211,7 @@ app.controller('TimelineController', function($scope, $stateParams, $state, Twit
   };
 };
 
-  // $scope.user_id = 'theAsshole';
+
   Twitter_api.loadTimeline($scope.name)
   .then(function(resp) {
     console.log(resp);

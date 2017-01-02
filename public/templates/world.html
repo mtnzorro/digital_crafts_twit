@@ -29,10 +29,10 @@
     <input class="form-control" type="password" ng-model="password1" placeholder="Password">
     <input class="form-control" type="password" ng-model="password2" placeholder="Confirm Password">
     <input class="form-control" type="text" ng-model="first_name" placeholder="First name">
-    <input class="form-control" type="text" ng-model="last_name" placeholder="Last name">
-    <input class="form-control" type="text" ng-model="avatar_url" placeholder="Avatar image path">
+    <!-- <input class="form-control" type="text" ng-model="last_name" placeholder="Last name"> -->
+    <!-- <input class="form-control" type="text" ng-model="avatar_url" placeholder="Avatar image path"> -->
     <button type="submit" class="btn btn-success">Submit</button>
-    <button type="submit" ng-click="closeSignup()" ng-click="slide = 'slideInUp:'" class="btn btn-default">Cancel</button>
+    <button type="submit" ng-click="closeSignup()"  class="btn btn-default">Cancel</button>
   </form>
 </div>
 
@@ -46,7 +46,7 @@
 
   <div class="tweetWrapper" ng-repeat = "tweet in results">
     <div class="tweet">
-      <img class="tweet_pic" src="/images/{{tweet.avatar_url}}">
+      <img class="tweet_pic" src="/images/twit_ninja.png">
       <div class="tweet_content_wrapper">
         <div class="tweet_header_wrapper">
           <p>
