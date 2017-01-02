@@ -193,6 +193,7 @@ app.controller('TimelineController', function($scope, $stateParams, $state, Twit
     Twitter_api.tweet($scope.makeTweet, $scope.profile_data._id, $scope.profile_data.name, $scope.profile_data.avatar_url)
   .then(function(res){
     console.log(res);
+    $scope.makeTweet = '';
   })
   .catch(function(err){
     console.log("Error in posting tweet:", err.stack);
